@@ -15,6 +15,15 @@ func main() {
 
 	flag.Parse()
 
+	answerCh := make(chan string)
+	go func() {
+		var answer string
+		fmt.Scanf("%s\n", &answer)
+		answerCh <- answer
+	}()
+	answer := <-answerCh
+	fmt.Println(answer)
+
 	file, err := os.Open(*csvFilename)
 	if err != nil {
 		exit(fmt.Sprintf("Failed to open the CSV file: %s\n", *csvFilename))
